@@ -1,5 +1,6 @@
 package com.martin.springcloud.user.controller;
 
+import com.martin.springcloud.user.feignclient.OrderInterface;
 import com.martin.springcloud.user.domain.UserDo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -17,6 +18,9 @@ public class UserController {
     @Autowired
     private LoadBalancerClient loadBalancerClient;
 
+    @Autowired
+    private OrderInterface orderInterface;
+
     @GetMapping("/{id}")
     @ResponseBody
     public UserDo getUser(@PathVariable Long id) {
@@ -24,6 +28,15 @@ public class UserController {
         userDo.setId(id);
         userDo.setName("名字");
         return restTemplate.getForObject("http://zengguoqiangorder/order/" + userDo.getId(), UserDo.class);
+    }
+
+    @GetMapping("/feign/{id}")
+    @ResponseBody
+    public UserDo getFeignUser(@PathVariable Long id) {
+        UserDo userDo = new UserDo();
+        userDo.setId(id);
+        userDo.setName("名字");
+        return orderInterface.getOrder(userDo.getId());
     }
 
     @GetMapping(value = "/test")

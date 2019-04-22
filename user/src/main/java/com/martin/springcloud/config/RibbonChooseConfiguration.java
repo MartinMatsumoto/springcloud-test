@@ -6,6 +6,7 @@ import com.netflix.loadbalancer.RandomRule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+//这里的config类所在的包有一定讲究，就是你的包不能被@ComponentScan或者@SpringBootApplication扫描到。
 @Configuration
 public class RibbonChooseConfiguration {
 

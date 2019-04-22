@@ -15,7 +15,8 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class})
 @EnableEurekaClient
 @EnableFeignClients
-@RibbonClient(name = "zengguoqiangorder", configuration = RibbonChooseConfiguration.class)
+//用代码的方式改变均衡负载策略
+//@RibbonClient(name = "zengguoqiangorder", configuration = RibbonChooseConfiguration.class)
 public class UserApplication {
 
     @Bean
