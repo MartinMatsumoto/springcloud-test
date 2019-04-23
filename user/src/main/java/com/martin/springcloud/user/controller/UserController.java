@@ -2,6 +2,7 @@ package com.martin.springcloud.user.controller;
 
 import com.martin.springcloud.user.feignclient.OrderInterface;
 import com.martin.springcloud.user.domain.UserDo;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -22,12 +23,25 @@ public class UserController {
     private OrderInterface orderInterface;
 
     @GetMapping("/{id}")
+    @HystrixCommand(fallbackMethod = "getUserFallback")
     @ResponseBody
     public UserDo getUser(@PathVariable Long id) {
         UserDo userDo = new UserDo();
         userDo.setId(id);
         userDo.setName("名字");
         return restTemplate.getForObject("http://zengguoqiangorder/order/" + userDo.getId(), UserDo.class);
+    }
+
+    /**
+     * 失败策略
+     * @param id
+     * @return
+     */
+    public UserDo getUserFallback(Long id) {
+        UserDo user = new UserDo();
+        user.setId(0L);
+        user.setName("失败了！");
+        return user;
     }
 
     @GetMapping("/feign/{id}")

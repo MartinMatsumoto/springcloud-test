@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableFeignClients
 //用代码的方式改变均衡负载策略
 //@RibbonClient(name = "zengguoqiangorder", configuration = RibbonChooseConfiguration.class)
+@EnableCircuitBreaker
 public class UserApplication {
 
     @Bean
