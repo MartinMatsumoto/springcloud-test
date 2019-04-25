@@ -2,6 +2,7 @@ package com.martin.springcloud.user.controller;
 
 import com.martin.springcloud.user.feignclient.OrderInterface;
 import com.martin.springcloud.user.domain.UserDo;
+import com.martin.springcloud.user.feignclient.OrderMustFailedInterface;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -21,6 +22,9 @@ public class UserController {
 
     @Autowired
     private OrderInterface orderInterface;
+
+    @Autowired
+    private OrderMustFailedInterface orderMustFailedInterface;
 
     @GetMapping("/{id}")
     @HystrixCommand(fallbackMethod = "getUserFallback",
@@ -53,6 +57,15 @@ public class UserController {
         userDo.setId(id);
         userDo.setName("名字");
         return orderInterface.getOrder(userDo.getId());
+    }
+
+    @GetMapping("/feignmustfailed/{id}")
+    @ResponseBody
+    public UserDo getFeignFailedUser(@PathVariable Long id) {
+        UserDo userDo = new UserDo();
+        userDo.setId(id);
+        userDo.setName("名字");
+        return orderMustFailedInterface.getOrder(userDo.getId());
     }
 
     @GetMapping(value = "/test")
