@@ -23,7 +23,9 @@ public class UserController {
     private OrderInterface orderInterface;
 
     @GetMapping("/{id}")
-    @HystrixCommand(fallbackMethod = "getUserFallback")
+    @HystrixCommand(fallbackMethod = "getUserFallback",
+    groupKey = "userFallbackGroup",
+    commandKey = "userFallbackCommand")
     @ResponseBody
     public UserDo getUser(@PathVariable Long id) {
         UserDo userDo = new UserDo();
