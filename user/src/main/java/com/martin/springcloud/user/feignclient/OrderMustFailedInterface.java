@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @date: 创建时间：2019/4/25 15:18
  * @description: 测试一下 肯定会失败的feign
  */
-@FeignClient(value = "zengguoqiangorder", configuration = FeignDisableHystrix.class, fallback = OrderMustFailedFallback.class)
+@FeignClient(value = "zengguoqiangorder", configuration = FeignEnableHystrix.class, fallback = OrderMustFailedFallback.class)
 public interface OrderMustFailedInterface {
 
     @RequestMapping(value = "/???/{userId}", method = RequestMethod.GET)

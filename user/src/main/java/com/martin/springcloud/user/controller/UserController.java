@@ -1,5 +1,6 @@
 package com.martin.springcloud.user.controller;
 
+import com.martin.springcloud.user.feignclient.OrderFactoryInterface;
 import com.martin.springcloud.user.feignclient.OrderInterface;
 import com.martin.springcloud.user.domain.UserDo;
 import com.martin.springcloud.user.feignclient.OrderMustFailedInterface;
@@ -25,6 +26,9 @@ public class UserController {
 
     @Autowired
     private OrderMustFailedInterface orderMustFailedInterface;
+
+    @Autowired
+    private OrderFactoryInterface orderFactoryInterface;
 
     @GetMapping("/{id}")
     @HystrixCommand(fallbackMethod = "getUserFallback",
@@ -66,6 +70,15 @@ public class UserController {
         userDo.setId(id);
         userDo.setName("名字");
         return orderMustFailedInterface.getOrder(userDo.getId());
+    }
+
+    @GetMapping("/feignusefactory/{id}")
+    @ResponseBody
+    public UserDo getFeignFactoryUser(@PathVariable Long id) {
+        UserDo userDo = new UserDo();
+        userDo.setId(id);
+        userDo.setName("名字");
+        return orderFactoryInterface.getOrder(userDo.getId());
     }
 
     @GetMapping(value = "/test")
