@@ -34,7 +34,8 @@ public class FeignEnableHystrix {
 
     @Bean
     public Retryer feignRetryer() {
-//        return new Retryer.Default();
+//        return new Retryer.Default(); //默认
+//        return Retryer.NEVER_RETRY; //取消重试
         return new Retryer.Default(100, 1000, 4);
     }
 }
